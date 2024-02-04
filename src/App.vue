@@ -5,7 +5,6 @@
       <p class="py-4">{{ modalContent }}</p>
       <div class="modal-action">
         <form method="dialog">
-          <!-- if there is a button in form, it will close the modal -->
           <button class="btn">Close</button>
         </form>
       </div>
@@ -18,7 +17,15 @@
       <img src="/logo-dark.svg" alt="DynamiK team logo" class="h-8 auto" v-else />
     </div>
 
-    <div class="flex-1 flex justify-end">
+    <div class="flex-1 flex justify-end space-x-2">
+      <button
+        class="btn btn-sm btn-ghost"
+        aria-labelledby="Go to github repository"
+        onclick="window.open('https://github.com/SuhJae/vex-image')"
+      >
+        <Github :size="20" />
+      </button>
+
       <label class="cursor-pointer grid place-items-center">
         <input
           type="checkbox"
@@ -40,8 +47,17 @@
     </div>
   </section>
 
-  <section class="flex justify-center items-center p-4 md:p-8">
-    <div class="p-3 bg-base rounded-lg border max-w-4xl w-screen">
+  <section class="flex justify-center items-center p-4">
+    <div class="p-3 md:p-6 bg-base rounded-lg border max-w-4xl w-full">
+      <h2 class="font-bold text-2xl md:text-3xl">How to use</h2>
+      <p class="pb-4 text-sm md:text-base">
+        Use any image editing software you like to create a 480×272 pixel PNG image that you want to
+        display on the VEX Brain's whole screen (Transparency is supported). Then, upload the image
+        using the file input below. The code will be generated and displayed for you to copy or
+        download. Insert the code into your VEX C++ project and call the
+        <code class="border rounded-md text-primary">drawLogo()</code> method to display the image.
+      </p>
+
       <div class="flex space-x-2 justify-between">
         <input
           type="file"
@@ -73,15 +89,19 @@
       </div>
 
       <div v-if="generatedCode">
-        <div class="mt-2 p-6 rounded-lg max-h-96 overflow-scroll justify-center border code-block">
+        <div class="mt-2 md:mt-4 p-6 rounded-lg max-h-96 overflow-scroll justify-center border code-block">
           <pre v-html="highlightedCode" class="language-cpp"></pre>
         </div>
 
         <p class="pt-2">
           Code size:
-          <span v-if="generatedCode">{{ generatedCode.length.toLocaleString() }} bytes</span>
+          <span class=" font-mono">{{ generatedCode.length.toLocaleString() }}</span> bytes
         </p>
       </div>
+      <p class="text-sm text-gray-500 mt-3">
+        <span class="font-bold">Note:</span> All data is processed locally in your browser. No data
+        ever leaves your device.
+      </p>
     </div>
   </section>
 </template>
@@ -100,8 +120,8 @@
 
 <script setup>
 import { watch, ref, onMounted } from 'vue'
-import { Sun, Moon, Download, Clipboard, ClipboardCheck } from 'lucide-vue-next'
 
+import { Sun, Moon, Download, Clipboard, ClipboardCheck, Github } from 'lucide-vue-next'
 import hljs from 'highlight.js'
 import '/src/assets/code.css'
 
@@ -128,8 +148,8 @@ const uploadedImage = ref(null)
 const generatedCode = ref('')
 const highlightedCode = ref('')
 
-const modalTitle = ref("")
-const modalContent = ref("")
+const modalTitle = ref('')
+const modalContent = ref('')
 
 function handleFileUpload(event) {
   const file = event.target.files[0]
@@ -140,8 +160,8 @@ function handleFileUpload(event) {
         uploadedImage.value = img
         processImage() // Start processing right after the image is validated
       } else {
-        modalTitle.value = "Invalid Image Size"
-        modalContent.value = "Image must be PNG format and have a size of 480x272 pixels."
+        modalTitle.value = 'Invalid Image Size'
+        modalContent.value = `Image must be PNG format and have a size of 480×272 pixels. Your image is ${img.width}×${img.height} pixels.`
         document.getElementById('my_modal_1').showModal()
         event.target.value = ''
       }
