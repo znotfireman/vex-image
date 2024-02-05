@@ -51,7 +51,7 @@
     <div class="p-3 md:p-6 bg-base rounded-lg border max-w-4xl w-full">
       <h2 class="font-bold text-2xl md:text-3xl">How to use</h2>
       <p class="pb-4 text-sm md:text-base">
-        Use any image editing software you like to create a 480×272 pixel PNG image that you want to
+        Use any image editing software you like to create a 480×240 pixel PNG image that you want to
         display on the VEX Brain's whole screen (Transparency is supported). Then, upload the image
         using the file input below. The code will be generated and displayed for you to copy or
         download. Insert the code into your VEX C++ project and call the
@@ -156,12 +156,12 @@ function handleFileUpload(event) {
   if (file) {
     const img = new Image()
     img.onload = function () {
-      if (img.width === 480 && img.height === 272) {
+      if (img.width === 480 && img.height === 240) {
         uploadedImage.value = img
         processImage() // Start processing right after the image is validated
       } else {
         modalTitle.value = 'Invalid Image Size'
-        modalContent.value = `Image must be PNG format and have a size of 480×272 pixels. Your image is ${img.width}×${img.height} pixels.`
+        modalContent.value = `Image must be PNG format and have a size of 480×240 pixels. Your image is ${img.width}×${img.height} pixels.`
         document.getElementById('my_modal_1').showModal()
         event.target.value = ''
       }
