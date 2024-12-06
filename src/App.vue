@@ -1,120 +1,102 @@
 <template>
-  <dialog id="my_modal_1" class="modal">
-    <div class="modal-box">
-      <h3 class="font-bold text-lg">{{ modalTitle }}</h3>
-      <p class="py-4">{{ modalContent }}</p>
-      <div class="modal-action">
-        <form method="dialog">
-          <button class="btn">Close</button>
-        </form>
-      </div>
-    </div>
-  </dialog>
-
-  <nav class="navbar px-6">
-    <div class="flex-1">
-      <img src="/logo.svg" alt="DynamiK team logo" class="h-8 auto" v-if="!isDarkTheme" />
-      <img src="/logo-dark.svg" alt="DynamiK team logo" class="h-8 auto" v-else />
-    </div>
-
-    <div class="flex-1 flex justify-end space-x-2">
-      <button
-        class="btn btn-sm btn-ghost"
-        aria-labelledby="Go to github repository"
-        onclick="window.open('https://github.com/SuhJae/vex-image')"
-      >
-        <Github :size="20" />
-      </button>
-
-      <label class="cursor-pointer grid place-items-center">
-        <input
-          type="checkbox"
-          v-model="isDarkTheme"
-          class="toggle bg-base-content row-start-1 col-start-1 col-span-2"
-        />
-        <Sun :size="14" color="currentColor" class="col-start-1 row-start-1" />
-        <Moon :size="14" class="col-start-2 row-start-1" />
-      </label>
-    </div>
-  </nav>
-
-  <section class="h-[30vh] px-8 pt-[5vh]">
-    <div class="flex justify-center items-center h-full flex-col">
-      <h1 class="font-bold text-center text-2xl sm:text-4xl">VEX Robotics Image Converter</h1>
-      <p class="font-light text-center text-sm sm:text-lg">
-        Convert PNG images into ready-to-use VEX Robotics code
-      </p>
-    </div>
-  </section>
-
-  <section class="flex justify-center items-center p-4">
-    <div class="p-3 md:p-6 bg-base rounded-lg border max-w-4xl w-full">
-      <h2 class="font-bold text-2xl md:text-3xl">How to use</h2>
-      <p class="pb-4 text-sm md:text-base">
-        Use any image editing software you like to create a 480×240 pixel PNG image that you want to
-        display on the VEX Brain's whole screen (Transparency is supported). Then, upload the image
-        using the file input below. The code will be generated and displayed for you to copy or
-        download. Insert the code into your VEX C++ project and call the
-        <code class="border rounded-md text-primary">drawLogo()</code> method to display the image.
-      </p>
-
-      <div class="flex space-x-2 justify-between">
-        <input
-          type="file"
-          class="file-input w-full max-w-xs file-input-ghost file-input-bordered"
-          @change="handleFileUpload"
-          accept="image/png"
-        />
-
-        <div class="flex space-x-2">
-          <button
-            class="btn btn-accent btn-square btn-outline"
-            @click="copyCode"
-            aria-labelledby="copy generated code"
-            :disabled="!generatedCode"
-          >
-            <Clipboard :size="20" v-if="!recentlyCopied" />
-            <ClipboardCheck :size="20" v-else />
-          </button>
-
-          <button
-            class="btn btn-accent btn-square btn-outline"
-            @click="downloadCode"
-            aria-labelledby="download generated code"
-            :disabled="!generatedCode"
-          >
-            <Download :size="20" />
-          </button>
+    <dialog id="my_modal_1" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">{{ modalTitle }}</h3>
+            <p class="py-4">{{ modalContent }}</p>
+            <div class="modal-action">
+                <form method="dialog">
+                    <button class="btn">Close</button>
+                </form>
+            </div>
         </div>
-      </div>
+    </dialog>
 
-      <div v-if="generatedCode">
-        <div class="mt-2 md:mt-4 p-6 rounded-lg max-h-96 overflow-scroll justify-center border code-block">
-          <pre v-html="highlightedCode" class="language-cpp"></pre>
+    <nav class="navbar px-6">
+        <div class="flex-1">
+            <img src="/logo.svg" alt="DynamiK team logo" class="h-8 auto" v-if="!isDarkTheme" />
+            <img src="/logo-dark.svg" alt="DynamiK team logo" class="h-8 auto" v-else />
         </div>
 
-        <p class="pt-2">
-          Code size:
-          <span class=" font-mono">{{ generatedCode.length.toLocaleString() }}</span> bytes
-        </p>
-      </div>
-      <p class="text-sm text-gray-500 mt-3">
-        <span class="font-bold">Note:</span> All data is processed locally in your browser. No data
-        ever leaves your device.
-      </p>
-    </div>
-  </section>
+        <div class="flex-1 flex justify-end space-x-2">
+            <button class="btn btn-sm btn-ghost" aria-labelledby="Go to github repository"
+                onclick="window.open('https://github.com/SuhJae/vex-image')">
+                <Github :size="20" />
+            </button>
+
+            <label class="cursor-pointer grid place-items-center">
+                <input type="checkbox" v-model="isDarkTheme"
+                    class="toggle bg-base-content row-start-1 col-start-1 col-span-2" />
+                <Sun :size="14" color="currentColor" class="col-start-1 row-start-1" />
+                <Moon :size="14" class="col-start-2 row-start-1" />
+            </label>
+        </div>
+    </nav>
+
+    <section class="h-[30vh] px-8 pt-[5vh]">
+        <div class="flex justify-center items-center h-full flex-col">
+            <h1 class="font-bold text-center text-2xl sm:text-4xl">VEX Robotics Image Converter</h1>
+            <p class="font-light text-center text-sm sm:text-lg">
+                Convert PNG images into ready-to-use Rust Vexide code
+            </p>
+        </div>
+    </section>
+
+    <section class="flex justify-center items-center p-4">
+        <div class="p-3 md:p-6 bg-base rounded-lg border max-w-4xl w-full">
+            <h2 class="font-bold text-2xl md:text-3xl">How to use</h2>
+            <p class="pb-4 text-sm md:text-base">
+                Use any image editing software you like to create a 480×240 pixel PNG image that you want to
+                display on the VEX Brain's whole screen (Transparency is supported). Then, upload the image
+                using the file input below. The code will be generated and displayed for you to copy or
+                download. Insert the code into your Rust Vexide project and call the
+                <code class="border rounded-md text-primary">draw()</code> function to display the image.
+            </p>
+
+            <div class="flex space-x-2 justify-between">
+                <input type="file" class="file-input w-full max-w-xs file-input-ghost file-input-bordered"
+                    @change="handleFileUpload" accept="image/png" />
+
+                <div class="flex space-x-2">
+                    <button class="btn btn-accent btn-square btn-outline" @click="copyCode"
+                        aria-labelledby="copy generated code" :disabled="!generatedCode">
+                        <Clipboard :size="20" v-if="!recentlyCopied" />
+                        <ClipboardCheck :size="20" v-else />
+                    </button>
+
+                    <button class="btn btn-accent btn-square btn-outline" @click="downloadCode"
+                        aria-labelledby="download generated code" :disabled="!generatedCode">
+                        <Download :size="20" />
+                    </button>
+                </div>
+            </div>
+
+            <div v-if="generatedCode">
+                <div class="mt-2 md:mt-4 p-6 rounded-lg max-h-96 overflow-scroll justify-center border code-block">
+                    <pre v-html="highlightedCode" class="language-cpp"></pre>
+                </div>
+
+                <p class="pt-2">
+                    Code size:
+                    <span class=" font-mono">{{ generatedCode.length.toLocaleString() }}</span> bytes
+                </p>
+            </div>
+            <p class="text-sm text-gray-500 mt-3">
+                <span class="font-bold">Note:</span> All data is processed locally in your browser. No data
+                ever leaves your device.
+            </p>
+        </div>
+    </section>
 </template>
 
 <style>
 [data-theme='light'] .code-block {
-  scrollbar-color: #e5e7eb transparent;
-  scrollbar-width: thin;
+    scrollbar-color: #e5e7eb transparent;
+    scrollbar-width: thin;
 }
 
 [data-theme='dark'] .code-block {
-  scrollbar-color: #1b1f25 transparent;
-  scrollbar-width: thin;
+    scrollbar-color: #1b1f25 transparent;
+    scrollbar-width: thin;
 }
 </style>
 
@@ -130,17 +112,17 @@ const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-schem
 const isDarkTheme = ref(prefersDark)
 
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
-  isDarkTheme.value = event.matches
+    isDarkTheme.value = event.matches
 })
 
 onMounted(() => {
-  watch(
-    isDarkTheme,
-    (newValue) => {
-      document.documentElement.setAttribute('data-theme', newValue ? 'dark' : 'light')
-    },
-    { immediate: true }
-  )
+    watch(
+        isDarkTheme,
+        (newValue) => {
+            document.documentElement.setAttribute('data-theme', newValue ? 'dark' : 'light')
+        },
+        { immediate: true }
+    )
 })
 
 // ========== Code Generation ==========
@@ -152,143 +134,172 @@ const modalTitle = ref('')
 const modalContent = ref('')
 
 function handleFileUpload(event) {
-  const file = event.target.files[0]
-  if (file) {
-    const img = new Image()
-    img.onload = function () {
-      if (img.width === 480 && img.height === 240) {
-        uploadedImage.value = img
-        processImage() // Start processing right after the image is validated
-      } else {
-        modalTitle.value = 'Invalid Image Size'
-        modalContent.value = `Image must be PNG format and have a size of 480×240 pixels. Your image is ${img.width}×${img.height} pixels.`
-        document.getElementById('my_modal_1').showModal()
-        event.target.value = ''
-      }
+    const file = event.target.files[0]
+    if (file) {
+        const img = new Image()
+        img.onload = function () {
+            if (img.width === 480 && img.height === 240) {
+                uploadedImage.value = img
+                processImage() // Start processing right after the image is validated
+            } else {
+                modalTitle.value = 'Invalid Image Size'
+                modalContent.value = `Image must be PNG format and have a size of 480×240 pixels. Your image is ${img.width}×${img.height} pixels.`
+                document.getElementById('my_modal_1').showModal()
+                event.target.value = ''
+            }
+        }
+        img.src = URL.createObjectURL(file)
     }
-    img.src = URL.createObjectURL(file)
-  }
 }
 
 function processImage() {
-  const canvas = document.createElement('canvas')
-  canvas.width = uploadedImage.value.width
-  canvas.height = uploadedImage.value.height
-  const ctx = canvas.getContext('2d')
-  ctx.drawImage(uploadedImage.value, 0, 0)
-  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data
+    const canvas = document.createElement('canvas')
+    canvas.width = uploadedImage.value.width
+    canvas.height = uploadedImage.value.height
+    const ctx = canvas.getContext('2d')
+    ctx.drawImage(uploadedImage.value, 0, 0)
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data
 
-  const encodedImage = encodeImage(imageData, canvas.width, canvas.height)
-  generatedCode.value = generateCpp(encodedImage)
+    const encodedImage = encodeImage(imageData, canvas.width, canvas.height)
+    generatedCode.value = generateCpp(encodedImage)
 }
 
 function encodeImage(imageData, width, height) {
-  let encodedImage = []
-  let currentColor = null
-  let repeatCount = 0
+    let encodedImage = []
+    let currentColor = null
+    let repeatCount = 0
 
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      const index = (y * width + x) * 4
-      const r = imageData[index]
-      const g = imageData[index + 1]
-      const b = imageData[index + 2]
-      const a = imageData[index + 3]
-      let color = ''
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+            const index = (y * width + x) * 4
+            const r = imageData[index]
+            const g = imageData[index + 1]
+            const b = imageData[index + 2]
+            const a = imageData[index + 3]
+            let color = ''
 
-      if (a !== 0) {
-        color = `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`
-      }
+            if (a !== 0) {
+                color = `${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`
+            }
 
-      if (color === currentColor) {
-        repeatCount++
-      } else {
-        if (currentColor !== null) {
-          encodedImage.push([currentColor, repeatCount])
+            if (color === currentColor) {
+                repeatCount++
+            } else {
+                if (currentColor !== null) {
+                    encodedImage.push([currentColor, repeatCount])
+                }
+                currentColor = color
+                repeatCount = 1
+            }
         }
-        currentColor = color
-        repeatCount = 1
-      }
     }
-  }
 
-  encodedImage.push([currentColor, repeatCount]) // Add the last color sequence
-  return encodedImage
+    encodedImage.push([currentColor, repeatCount]) // Add the last color sequence
+    return encodedImage
 }
 
 function generateCpp(encodedImage) {
-  let cppCode = '#include "vex.h"\n\nusing namespace vex;\n\nvoid drawLogo() {\n'
-  cppCode += '    static const char* imageColors[] = {\n        '
+    let rustCode = `use anyhow::Result;
+use vexide::{
+    devices::display::{Fill, Rect},
+    prelude::*,
+};
 
-  const uniqueColors = [
-    ...new Set(encodedImage.map((item) => item[0]).filter((color) => color !== ''))
-  ]
-  const colorIndices = {}
-  uniqueColors.forEach((color, index) => {
-    colorIndices[color] = index
-    cppCode += `"${color}", `
-  })
+pub fn rgb_from_hex(hex: &str) -> Result<Rgb<u8>> {
+    let big_int = hex.parse::<i32>()?;
+    Ok(Rgb::new(
+        ((big_int >> 16_i32) & 255_i32) as u8,
+        ((big_int >> 8_i32) & 255_i32) as u8,
+        (big_int & 255_i32) as u8,
+    ))
+}
 
-  cppCode += '\n    };\n\n    static const int imageIndices[] = {\n        '
-  encodedImage.forEach((item) => {
-    const index = item[0] === '' ? -1 : colorIndices[item[0]]
-    cppCode += `${index}, `
-  })
+pub fn draw(display: &mut Display) -> Result<()> {
+    let mut x = 0_i16;
+    let mut y = 0_i16;
 
-  cppCode += '\n    };\n\n    static const int imageCounts[] = {\n        '
-  encodedImage.forEach((item) => {
-    cppCode += `${item[1]}, `
-  })
+    for index in 0..IMAGE_INDICES.len() {
+        let indice = IMAGE_INDICES[index];
+        let count = IMAGE_COUNTS[index];
 
-  cppCode += '\n    };\n'
-  cppCode += '    int x = 0, y = 0;\n'
-  cppCode += '    for(int i = 0; i < sizeof(imageIndices) / sizeof(imageIndices[0]); ++i) {\n'
-  cppCode += '        int index = imageIndices[i];\n'
-  cppCode += '        int count = imageCounts[i];\n'
-  cppCode += '        if(index >= 0) {\n'
-  cppCode += '            const char* color = imageColors[index];\n'
-  cppCode += '            Brain.Screen.setPenColor(color);\n'
-  cppCode += '            for(int j = 0; j < count; ++j) {\n'
-  cppCode += '                Brain.Screen.drawPixel(x++, y);\n'
-  cppCode += '                if(x >= 480) { x = 0; y++; }\n'
-  cppCode += '            }\n'
-  cppCode += '        } else {\n'
-  cppCode += '            x += count;\n'
-  cppCode += '            while(x >= 480) { x -= 480; y++; }\n'
-  cppCode += '        }\n'
-  cppCode += '    }\n'
-  cppCode += '}\n'
+        if indice >= 0 {
+            let hex = IMAGE_COLORS[indice as usize];
+            for _ in 0..count {
+                Rect::from_dimensions([x, y], 1, 1).fill(display, rgb_from_hex(hex)?);
+                x += 1;
 
-  return cppCode
+                if x >= 480 {
+                    x = 0;
+                    y += 1;
+                }
+            }
+        } else {
+            x += count;
+            while x >= 480 {
+                x -= 480;
+                y += 1
+            }
+        }
+    }
+
+    Ok(())
+}
+
+// Image data`
+
+    rustCode += '\n\nconst IMAGE_COLORS: [&str; 33666] = ['
+
+    const uniqueColors = [
+        ...new Set(encodedImage.map((item) => item[0]).filter((color) => color !== ''))
+    ]
+    const colorIndices = {}
+    uniqueColors.forEach((color, index) => {
+        colorIndices[color] = index
+        rustCode += `"${color}", `
+    })
+
+    rustCode += '];\nconst IMAGE_INDICES: [u16; 82097] = ['
+    encodedImage.forEach((item) => {
+        const index = item[0] === '' ? -1 : colorIndices[item[0]]
+        rustCode += `${index}, `
+    })
+
+    rustCode += '];\nconst IMAGE_COUNTS: [i16; 82097] = [        '
+    encodedImage.forEach((item) => {
+        rustCode += `${item[1]}, `
+    })
+
+    rustCode += '];\n'
+    return rustCode
 }
 
 function downloadCode() {
-  const blob = new Blob([generatedCode.value], { type: 'text/plain' })
-  const link = document.createElement('a')
-  link.href = URL.createObjectURL(blob)
-  link.download = 'imageCode.cpp'
-  link.click()
+    const blob = new Blob([generatedCode.value], { type: 'text/plain' })
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(blob)
+    link.download = 'image.rs'
+    link.click()
 }
 
 // Watcher to update highlighted code when generatedCode changes
 watch(generatedCode, (newValue) => {
-  if (newValue) {
-    highlightedCode.value = hljs.highlight(newValue, { language: 'cpp' }).value
-  }
+    if (newValue) {
+        highlightedCode.value = hljs.highlight(newValue, { language: 'rust' }).value
+    }
 })
 
 // Highlight all code on initial mount
 onMounted(() => {
-  hljs.highlightAll()
+    hljs.highlightAll()
 })
 
 const recentlyCopied = ref(false)
 
 const copyCode = () => {
-  navigator.clipboard.writeText(generatedCode.value)
-  recentlyCopied.value = true
-  setTimeout(() => {
-    recentlyCopied.value = false
-  }, 1500)
+    navigator.clipboard.writeText(generatedCode.value)
+    recentlyCopied.value = true
+    setTimeout(() => {
+        recentlyCopied.value = false
+    }, 1500)
 }
 </script>
